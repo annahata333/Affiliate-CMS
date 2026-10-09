@@ -1,0 +1,10 @@
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+
+  input {
+    width: 20px;
+  }
+}

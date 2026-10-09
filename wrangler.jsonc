@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "affiliate-cms",
+  "compatibility_date": "2026-08-15",
+  "compatibility_flags": ["global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "affiliate-cms",
+    },
+  ],
+  "images": {
+    "binding": "IMAGES",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "d1_databases": [
+    {
+      "binding": "affiliate_cms_db",
+      "database_name": "affiliate-cms-db",
+      "database_id": "b597e928-49a9-4a80-badf-d034a7dc5be0",
+      "migrations_dir": "drizzle",
+    },
+  ],
+}

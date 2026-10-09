@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "affiliate-cms-seed",
+  "main": "seed-worker.ts",
+  "compatibility_date": "2026-08-15",
+  "d1_databases": [
+    {
+      "binding": "affiliate_cms_db",
+      "database_name": "affiliate-cms-db",
+      "database_id": "b597e928-49a9-4a80-badf-d034a7dc5be0",
+    },
+  ],
+}

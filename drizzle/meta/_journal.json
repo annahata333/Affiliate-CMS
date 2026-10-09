@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1787233025321,
+      "tag": "0000_abandoned_hardball",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1787748649320,
+      "tag": "0001_premium_toad_men",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788181291787,
+      "tag": "0002_curvy_prodigy",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1788705349696,
+      "tag": "0003_material_leech",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1789041441667,
+      "tag": "0004_furry_prism",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1789559215498,
+      "tag": "0005_fearless_ozymandias",
+      "breakpoints": true
+    }
+  ]
+}
