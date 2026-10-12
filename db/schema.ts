@@ -16,7 +16,6 @@ export const products = sqliteTable("products", {
   affiliateNetwork: text("affiliate_network"),
   affiliateUrl: text("affiliate_url").notNull(),
   asin: text("asin"),
-  giftToolIds: text("gift_tool_ids").notNull().default("[]"),
   createdAt: integer("created_at").notNull(),
 });
 
@@ -104,6 +103,28 @@ export const giftTools = sqliteTable("gift_tools", {
 
   slug: text("slug").notNull().unique(),
 });
+
+export const productGiftTools = sqliteTable(
+  "product_gift_tools",
+  {
+    productId: integer("product_id")
+      .notNull()
+      .references(() => products.id, {
+        onDelete: "cascade",
+      }),
+
+    giftToolId: integer("gift_tool_id")
+      .notNull()
+      .references(() => giftTools.id, {
+        onDelete: "cascade",
+      }),
+  },
+  (table) => [
+    primaryKey({
+      columns: [table.productId, table.giftToolId],
+    }),
+  ],
+);
 
 export const giftToolAttributes = sqliteTable(
   "gift_tool_attributes",
