@@ -43,6 +43,13 @@
       "when": 1789559215498,
       "tag": "0005_fearless_ozymandias",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1791803486810,
+      "tag": "0006_normalize_product_gift_tools",
+      "breakpoints": true
     }
   ]
 }

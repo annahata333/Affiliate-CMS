@@ -1,9 +1,18 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getProducts, createProduct } from "@/db/products";
+import {
+  getProducts,
+  createProduct,
+  InvalidGiftToolIdsError,
+} from "@/db/products";
 import { addProductAttributes } from "@/db/attributes";
 import { isAuthenticated } from "@/lib/auth";
+<<<<<<< HEAD
 import { validateCreateProduct } from "@/lib/validation";
+=======
+
+import { CreateProductRequest } from "@/types/product";
+>>>>>>> annahata333-normalize-product-gift-tools
 
 export async function GET() {
   const { env } = getCloudflareContext();
@@ -49,13 +58,29 @@ export async function POST(request: NextRequest) {
 
   const { attributeValueIds, ...productData } = data;
 
-  const response = await createProduct(env.affiliate_cms_db, productData);
+  try {
+    const response = await createProduct(env.affiliate_cms_db, productData);
 
+<<<<<<< HEAD
   await addProductAttributes(
     env.affiliate_cms_db,
     response.id,
     attributeValueIds ?? [],
   );
+=======
+    await addProductAttributes(
+      env.affiliate_cms_db,
+      response.id,
+      attributeValueIds,
+    );
+>>>>>>> annahata333-normalize-product-gift-tools
 
-  return NextResponse.json(response, { status: 201 });
+    return NextResponse.json(response, { status: 201 });
+  } catch (error) {
+    if (error instanceof InvalidGiftToolIdsError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    throw error;
+  }
 }

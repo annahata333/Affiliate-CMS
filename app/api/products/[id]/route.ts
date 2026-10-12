@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
+<<<<<<< HEAD
 import { updateProduct, deleteProduct } from "@/db/products";
+=======
+import {
+  updateProduct,
+  deleteProduct,
+  InvalidGiftToolIdsError,
+} from "@/db/products";
+import { ProductUpdate } from "@/types/product";
+>>>>>>> annahata333-normalize-product-gift-tools
 import { isAuthenticated } from "@/lib/auth";
 import { validateProductUpdate } from "@/lib/validation";
 
@@ -35,18 +44,26 @@ export async function PUT(
     );
   }
 
-  const product = await updateProduct(env.affiliate_cms_db, Number(id), {
-    title: data.title,
-    image: data.image,
-    description: data.description,
-    affiliateNetwork: data.affiliateNetwork,
-    affiliateUrl: data.affiliateUrl,
-    asin: data.asin,
-    attributeValueIds: data.attributeValueIds,
-    giftToolIds: data.giftToolIds,
-  });
+  try {
+    const product = await updateProduct(env.affiliate_cms_db, Number(id), {
+      title: data.title,
+      image: data.image,
+      description: data.description,
+      affiliateNetwork: data.affiliateNetwork,
+      affiliateUrl: data.affiliateUrl,
+      asin: data.asin,
+      attributeValueIds: data.attributeValueIds,
+      giftToolIds: data.giftToolIds,
+    });
 
-  return NextResponse.json(product);
+    return NextResponse.json(product);
+  } catch (error) {
+    if (error instanceof InvalidGiftToolIdsError) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    throw error;
+  }
 }
 
 export async function DELETE(
