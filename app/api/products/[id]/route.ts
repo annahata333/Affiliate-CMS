@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-<<<<<<< HEAD
-import { updateProduct, deleteProduct } from "@/db/products";
-=======
 import {
   updateProduct,
   deleteProduct,
   InvalidGiftToolIdsError,
 } from "@/db/products";
-import { ProductUpdate } from "@/types/product";
->>>>>>> annahata333-normalize-product-gift-tools
 import { isAuthenticated } from "@/lib/auth";
 import { validateProductUpdate } from "@/lib/validation";
 
