@@ -7,7 +7,7 @@ import {
   attributeValues,
   attributes,
 } from "@/db/schema";
-import { Product, ProductUpdate } from "@/types/product";
+import { Product, ProductUpdate, CreateProductInput } from "@/types/product";
 
 export async function getProducts(d1: D1Database) {
   const db = createDb(d1);
@@ -91,7 +91,7 @@ export async function getProduct(d1: D1Database, id: number) {
   };
 }
 
-export async function createProduct(d1: D1Database, data: Product) {
+export async function createProduct(d1: D1Database, data: CreateProductInput) {
   const db = createDb(d1);
 
   const [product] = await db

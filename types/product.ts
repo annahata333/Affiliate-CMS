@@ -1,27 +1,29 @@
-export type Product = {
-  id: number;
+type ProductFields = {
   title: string;
   description: string | null;
   image: string | null;
   affiliateNetwork: string | null;
   affiliateUrl: string;
   asin: string | null;
-  createdAt: number;
+};
+
+type ProductRelations = {
+  giftToolIds?: number[];
   attributeValueIds?: number[];
+};
+
+export type Product = ProductFields &
+  ProductRelations & {
+    id: number;
+    createdAt: number;
+  };
+
+export type CreateProductInput = ProductFields & {
   giftToolIds?: number[];
 };
 
-export type ProductUpdate = {
-  title?: string;
-  description?: string;
-  image?: string;
-  affiliateNetwork?: string;
-  affiliateUrl?: string;
-  asin: string | null;
-  attributeValueIds?: number[];
-  giftToolIds?: number[];
-};
+export type ProductUpdate = Partial<ProductFields> & ProductRelations;
 
-export type CreateProductRequest = Product & {
-  attributeValueIds: number[];
+export type CreateProductRequest = CreateProductInput & {
+  attributeValueIds?: number[];
 };

@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import { updateProduct, deleteProduct } from "@/db/products";
-import { ProductUpdate } from "@/types/product";
 import { isAuthenticated } from "@/lib/auth";
+import { validateProductUpdate } from "@/lib/validation";
 
 export async function PUT(
   request: NextRequest,
@@ -18,7 +18,22 @@ export async function PUT(
   const { env } = getCloudflareContext();
   const { id } = await params;
 
-  const data = (await request.json()) as ProductUpdate;
+  let data: unknown;
+  try {
+    data = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON in request body" },
+      { status: 400 },
+    );
+  }
+
+  if (!validateProductUpdate(data)) {
+    return NextResponse.json(
+      { error: "Request body must be an object with at least one valid field" },
+      { status: 400 },
+    );
+  }
 
   const product = await updateProduct(env.affiliate_cms_db, Number(id), {
     title: data.title,
@@ -46,8 +61,13 @@ export async function DELETE(
 
   const { env } = getCloudflareContext();
   const { id } = await params;
+  const productId = Number(id);
 
-  await deleteProduct(env.affiliate_cms_db, Number(id));
+  if (!Number.isInteger(productId) || productId <= 0) {
+    return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
+  }
+
+  await deleteProduct(env.affiliate_cms_db, productId);
 
   return NextResponse.json({ success: true });
 }

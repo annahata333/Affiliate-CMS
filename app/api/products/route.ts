@@ -3,8 +3,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getProducts, createProduct } from "@/db/products";
 import { addProductAttributes } from "@/db/attributes";
 import { isAuthenticated } from "@/lib/auth";
-
-import { Product, CreateProductRequest } from "@/types/product";
+import { validateCreateProduct } from "@/lib/validation";
 
 export async function GET() {
   const { env } = getCloudflareContext();
@@ -29,7 +28,24 @@ export async function POST(request: NextRequest) {
 
   const { env } = getCloudflareContext();
 
-  const data = (await request.json()) as CreateProductRequest;
+  let data: unknown;
+
+  try {
+    data = await request.json();
+  } catch {
+    console.log("Validation error: Invalid JSON in request body");
+    return NextResponse.json(
+      { error: "Invalid JSON in request body" },
+      { status: 400 },
+    );
+  }
+
+  if (!validateCreateProduct(data)) {
+    return NextResponse.json(
+      { error: "Request body must be an object" },
+      { status: 400 },
+    );
+  }
 
   const { attributeValueIds, ...productData } = data;
 
@@ -38,7 +54,7 @@ export async function POST(request: NextRequest) {
   await addProductAttributes(
     env.affiliate_cms_db,
     response.id,
-    attributeValueIds,
+    attributeValueIds ?? [],
   );
 
   return NextResponse.json(response, { status: 201 });
